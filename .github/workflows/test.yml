@@ -50,4 +50,4 @@ jobs:
         composer install --no-interaction --prefer-dist
 
     - name: Run tests
-      run: vendor/bin/phpunit --coverage-text
+      run: vendor/bin/phpunit
