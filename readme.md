@@ -1,6 +1,6 @@
 # http_build_url() for PHP
 
-[![Tests](https://github.com/ozh/http_build_url/actions/workflows/test.yml/badge.svg)](https://github.com/ozh/http_build_url/actions/workflows/test.yml)
+[![Tests](https://github.com/jakeasmith/http_build_url/actions/workflows/test.yml/badge.svg)](https://github.com/ozh/http_build_url/actions/workflows/test.yml)
 [![Code Climate](https://codeclimate.com/github/jakeasmith/http_build_url/badges/gpa.svg)](https://codeclimate.com/github/jakeasmith/http_build_url)
 [![Latest Stable Version](https://poser.pugx.org/jakeasmith/http_build_url/v/stable.png)](https://packagist.org/packages/jakeasmith/http_build_url)
 [![Total Downloads](https://poser.pugx.org/jakeasmith/http_build_url/downloads.png)](https://packagist.org/packages/jakeasmith/http_build_url)
