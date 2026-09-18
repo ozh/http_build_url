@@ -1,6 +1,13 @@
 <?php
 
-class HttpBuildUrlTest extends \PHPUnit_Framework_TestCase
+// Use the appropriate base class depending on PHPUnit version
+if ( class_exists( 'PHPUnit\Framework\TestCase' ) ) {
+	class HttpBuildUrlTestBase extends \PHPUnit\Framework\TestCase {}
+} else {
+	class HttpBuildUrlTestBase extends \PHPUnit_Framework_TestCase {}
+}
+
+class HttpBuildUrlTest extends HttpBuildUrlTestBase
 {
 	private $full_url = "http://user:pass@www.example.com:8080/pub/index.php?a=b#files";
 
@@ -26,7 +33,7 @@ class HttpBuildUrlTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($expected, $actual);
 	}
 
-	public function trailingSlashProvider()
+	public static function trailingSlashProvider()
 	{
 		return array(
 			array(
@@ -192,7 +199,7 @@ class HttpBuildUrlTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($expected, $actual);
 	}
 
-	public function pathProvider()
+	public static function pathProvider()
 	{
 		return array(
 			array('/donuts/brownies', 'http://user:pass@www.example.com:8080/donuts/brownies?a=b#files'),
@@ -201,7 +208,7 @@ class HttpBuildUrlTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
-	public function queryProvider()
+	public static function queryProvider()
 	{
 		return array(
 			array('a=c', 'http://user:pass@www.example.com:8080/pub/index.php?a=c#files'),
@@ -209,7 +216,7 @@ class HttpBuildUrlTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 
-	public function bitmaskProvider()
+	public static function bitmaskProvider()
 	{
 		return array(
 			array('HTTP_URL_REPLACE', 'http://user:pass@www.example.com:8080/pub/index.php?a=b#files'),
