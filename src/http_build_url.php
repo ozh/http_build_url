@@ -4,7 +4,7 @@
  * URL constants as defined in the PHP Manual under "Constants usable with
  * http_build_url()".
  *
- * @see http://us2.php.net/manual/en/http.constants.php#http.constants.url
+ * @see https://www.php.net/manual/en/http.constants.php#http.constants.url
  */
 if (!defined('HTTP_URL_REPLACE')) {
 	define('HTTP_URL_REPLACE', 1);
@@ -48,24 +48,27 @@ if (!function_exists('http_build_url')) {
 	 * The parts of the second URL will be merged into the first according to
 	 * the flags argument.
 	 *
-	 * @param mixed $url     (part(s) of) an URL in form of a string or
-	 *                       associative array like parse_url() returns
-	 * @param mixed $parts   same as the first argument
-	 * @param int   $flags   a bitmask of binary or'ed HTTP_URL constants;
-	 *                       HTTP_URL_REPLACE is the default
-	 * @param array $new_url if set, it will be filled with the parts of the
-	 *                       composed url like parse_url() would return
-	 * @return string
+	 * @param string|array $url     (part(s) of) a URL in form of a string or
+	 *                              associative array like parse_url() returns
+	 * @param string|array|null $parts   same as the first argument
+	 * @param int          $flags   a bitmask of binary or'ed HTTP_URL constants;
+	 *                              HTTP_URL_REPLACE is the default
+	 * @param array|null   $new_url if set, it will be filled with the parts of the
+	 *                              composed url like parse_url() would return
 	 */
-	function http_build_url($url, $parts = array(), $flags = HTTP_URL_REPLACE, &$new_url = array())
-	{
-		is_array($url) || $url = parse_url($url);
-		is_array($parts) || $parts = parse_url($parts);
+	function http_build_url(
+		string|array $url,
+		string|array|null $parts = [],
+		int $flags = HTTP_URL_REPLACE,
+		?array &$new_url = null
+	): string {
+		$url   = is_array($url) ? $url : (parse_url($url) ?: []);
+		$parts = is_array($parts) ? $parts : (parse_url((string) $parts) ?: []);
 
 		isset($url['query']) && is_string($url['query']) || $url['query'] = null;
 		isset($parts['query']) && is_string($parts['query']) || $parts['query'] = null;
 
-		$keys = array('user', 'pass', 'port', 'path', 'query', 'fragment');
+		$keys = ['user', 'pass', 'port', 'path', 'query', 'fragment'];
 
 		// HTTP_URL_STRIP_ALL and HTTP_URL_STRIP_AUTH cover several other flags.
 		if ($flags & HTTP_URL_STRIP_ALL) {
@@ -76,8 +79,8 @@ if (!function_exists('http_build_url')) {
 			$flags |= HTTP_URL_STRIP_USER | HTTP_URL_STRIP_PASS;
 		}
 
-		// Schema and host are alwasy replaced
-		foreach (array('scheme', 'host') as $part) {
+		// Scheme and host are always replaced
+		foreach (['scheme', 'host'] as $part) {
 			if (isset($parts[$part])) {
 				$url[$part] = $parts[$part];
 			}
@@ -91,7 +94,7 @@ if (!function_exists('http_build_url')) {
 			}
 		} else {
 			if (isset($parts['path']) && ($flags & HTTP_URL_JOIN_PATH)) {
-				if (isset($url['path']) && substr($parts['path'], 0, 1) !== '/') {
+				if (isset($url['path']) && !str_starts_with($parts['path'], '/')) {
 					// Workaround for trailing slashes
 					$url['path'] .= "\0";
 					$url['path'] = rtrim(
@@ -120,13 +123,12 @@ if (!function_exists('http_build_url')) {
 			}
 		}
 
-		if (isset($url['path']) && $url['path'] !== '' && substr($url['path'], 0, 1) !== '/') {
+		if (isset($url['path']) && $url['path'] !== '' && !str_starts_with($url['path'], '/')) {
 			$url['path'] = '/' . $url['path'];
 		}
 
 		foreach ($keys as $key) {
-			$strip = 'HTTP_URL_STRIP_' . strtoupper($key);
-			if ($flags & constant($strip)) {
+			if ($flags & constant('HTTP_URL_STRIP_' . strtoupper($key))) {
 				unset($url[$key]);
 			}
 		}
