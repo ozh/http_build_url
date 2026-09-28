@@ -1,6 +1,7 @@
 # http_build_url() for PHP
 
 [![Tests](https://github.com/ozh/http_build_url/actions/workflows/test.yml/badge.svg)](https://github.com/ozh/http_build_url/actions/workflows/test.yml)
+![Packagist](https://img.shields.io/packagist/v/ozh/http_build_url)
 
 An implementation of [`http_build_url()`](https://www.php.net/manual/en/function.http-build-url.php),
 the URL builder from the `pecl_http` extension, for environments where that
@@ -14,9 +15,8 @@ code, but plenty of existing projects still call `http_build_url()` and just nee
 it to keep working on modern PHP. So this fork picks up maintenance:
 
 - published on Packagist as **`ozh/http_build_url`**
-- PHP 8.1+ only, typed signature, tested up to PHP 8.5
-- same behavior and same function name as the original, so switching is a one-line
-  change in `composer.json`
+- PHP 8.1+ only, typed signature
+- same behavior and same function name as the original, so switching is a one-line change in `composer.json`
 
 If you are starting fresh on PHP 8.5+, use [`Uri\Rfc3986\Uri`](https://www.php.net/manual/en/class.uri-rfc3986-uri.php)
 instead; see [Modern alternative](#modern-alternative) below.
